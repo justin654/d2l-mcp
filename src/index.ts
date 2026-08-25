@@ -194,7 +194,7 @@ function createServer(): McpServer {
   // Register file tools
   server.tool(
     "download_file",
-    "Download a file from D2L Brightspace. Provide a D2L content URL (e.g., https://learn.ul.ie/content/enforced/68929-CS4444.../file.docx or /content/enforced/...). The file will be saved to your Downloads folder by default, or to a custom path if specified. Returns the local file path, filename, size, and content type. Use this to download lecture slides, assignment files, course materials, or any file linked in course content.",
+    "Download a course file from D2L Brightspace. For a file topic returned by get_course_content, pass its url and id as topicId, along with the course orgUnitId, to use the authenticated file API without opening a browser. URL-only D2L content downloads remain supported. Saves to savePath or ~/Downloads and returns the local path, filename, size, content type, and extracted text when available.",
     {
       url: z
         .string()
@@ -207,9 +207,26 @@ function createServer(): McpServer {
         .describe(
           "Optional: Custom path to save the file (directory or full file path). Defaults to ~/Downloads"
         ),
+      orgUnitId: z
+        .number()
+        .optional()
+        .describe(
+          "Course org unit ID. Provide with topicId to use the authenticated Brightspace content API file endpoint."
+        ),
+      topicId: z
+        .number()
+        .optional()
+        .describe(
+          "File content topic ID. Provide with orgUnitId to use the authenticated Brightspace content API file endpoint."
+        ),
     },
     wrapToolHandler("download_file", async (args) => {
-      const result = await downloadFile(args.url, args.savePath);
+      const result = await downloadFile(
+        args.url,
+        args.savePath,
+        args.orgUnitId,
+        args.topicId
+      );
       const sizeKB = (result.size / 1024).toFixed(1);
       let text = `Downloaded: ${result.filename}\nPath: ${result.path}\nSize: ${sizeKB} KB\nType: ${result.contentType}`;
 

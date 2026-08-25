@@ -2,7 +2,7 @@ import { getToken } from "./auth.js";
 
 const D2L_HOST = process.env.D2L_HOST || "learn.ul.ie";
 const BASE_URL = `https://${D2L_HOST}`;
-const API_VERSION = "1.57";
+export const API_VERSION = "1.57";
 
 interface ApiResponse<T = unknown> {
   data: T;

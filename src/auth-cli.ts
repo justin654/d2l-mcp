@@ -28,7 +28,7 @@ async function main() {
   console.log("");
 
   try {
-    const token = await getToken();
+    await getToken();
     const expiry = new Date(getTokenExpiry());
 
     console.log("");
@@ -38,7 +38,6 @@ async function main() {
     console.log(
       "Your session has been saved. The MCP server will use it automatically."
     );
-    console.log("Token (first 50 chars):", token.substring(0, 50) + "...");
   } catch (error) {
     console.error("Authentication failed:", error);
     if (hasCredentials) {

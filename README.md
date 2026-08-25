@@ -132,6 +132,8 @@ MCP_TRANSPORT=stdio d2l-mcp
 | `get_my_courses`    | List all your enrolled courses                 |
 | `download_file`     | Download and extract content from course files |
 
+For browser-free course file downloads, call `get_course_content` first and pass the returned topic URL and ID to `download_file` together with the course `orgUnitId`. URL-only downloads remain supported for backwards compatibility.
+
 ## Example Prompts
 
 Once connected to Poke, you can ask things like:
